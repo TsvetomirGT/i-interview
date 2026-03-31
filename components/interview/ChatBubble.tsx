@@ -1,5 +1,5 @@
 import type { InterviewMode } from '@/lib/types'
-import { FeedbackCard, parseFeedback, hasFeedback } from './FeedbackCard'
+import { FeedbackCard, parseFeedback, hasFeedback, renderMd } from './FeedbackCard'
 import { TypingIndicator } from './TypingIndicator'
 
 interface ChatBubbleProps {
@@ -52,15 +52,17 @@ export function ChatBubble({ role, content, isStreaming, mode }: ChatBubbleProps
         AI
       </div>
       <div className="flex-1 min-w-0">
-        <div className="rounded-2xl rounded-tl-sm bg-[var(--bubble-ai-bg)] px-4 py-3 text-sm text-[var(--bubble-ai-fg)] whitespace-pre-wrap break-words leading-relaxed">
-          {displayText || null}
-        </div>
         {feedback && feedback.score !== null && (
           <FeedbackCard
             score={feedback.score}
             idealAnswer={feedback.idealAnswer}
             feedback={feedback.feedback}
           />
+        )}
+        {displayText && (
+          <div className={`rounded-2xl rounded-tl-sm bg-[var(--bubble-ai-bg)] px-4 py-3 text-sm text-[var(--bubble-ai-fg)] whitespace-pre-wrap break-words leading-relaxed${feedback ? ' mt-3' : ''}`}>
+            {renderMd(displayText)}
+          </div>
         )}
       </div>
     </div>

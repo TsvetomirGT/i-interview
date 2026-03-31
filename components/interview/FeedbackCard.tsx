@@ -25,7 +25,7 @@ export function hasFeedback(content: string): boolean {
 }
 
 /** Render a string with **bold** markdown as React nodes */
-function renderMd(text: string): ReactNode {
+export function renderMd(text: string): ReactNode {
   return text.split('\n').map((line, i, arr) => {
     const parts = line.split(/\*\*(.*?)\*\*/g)
     const nodes = parts.map((part, j) =>
