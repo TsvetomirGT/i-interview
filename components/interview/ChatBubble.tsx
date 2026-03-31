@@ -9,14 +9,21 @@ interface ChatBubbleProps {
   mode: InterviewMode
 }
 
-/** Strip the structured feedback block from AI message so it's rendered separately */
+/** Extract only the next question from the AI message, stripping the evaluation block */
 function extractConversationalText(content: string): string {
-  // Remove Score, Ideal Answer, Feedback blocks; keep everything else (the next question)
-  return content
-    .replace(/\*\*Score:\s*\d+\/10\*\*\n?/gi, '')
-    .replace(/\*\*Ideal Answer:\*\*[\s\S]*?(?=\*\*Feedback:|\n\n[A-Z#*]|$)/gi, '')
-    .replace(/\*\*Feedback:\*\*[\s\S]*?(?=\n\n[A-Z#*]|$)/gi, '')
-    .trim()
+  // Claude separates the evaluation block from the next question with a --- rule
+  const parts = content.split(/\n{1,2}-{3,}\n{1,2}/)
+  if (parts.length > 1) {
+    return parts[parts.length - 1]
+      .replace(/^\*\*Question\s*\d*:?\*\*\s*/i, '')
+      .trim()
+  }
+  // Fallback: take everything after the **Feedback:** paragraph
+  const afterFeedback = content.match(/\*\*Feedback:\*\*[\s\S]*?\n\n([\s\S]+)$/i)
+  if (afterFeedback) {
+    return afterFeedback[1].replace(/^\*\*Question\s*\d*:?\*\*\s*/i, '').trim()
+  }
+  return ''
 }
 
 export function ChatBubble({ role, content, isStreaming, mode }: ChatBubbleProps) {
