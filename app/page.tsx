@@ -6,7 +6,7 @@ export default function Home() {
     <div className="min-h-screen bg-[var(--background)]">
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Sidebar */}
-        <aside className="lg:w-72 shrink-0 border-b lg:border-b-0 lg:border-r border-[var(--border)] p-4 lg:p-6">
+        <aside className="lg:w-72 shrink-0 border-b lg:border-b-0 lg:border-r border-[var(--border)] p-4 lg:p-6 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
           <HistorySidebar />
         </aside>
 
