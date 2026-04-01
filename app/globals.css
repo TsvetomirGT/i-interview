@@ -50,6 +50,8 @@ html.dark {
   --feedback-fg: #fed7aa;
 }
 
+/* Beats the media query above when JS has explicitly selected light mode.
+   Values must stay in sync with :root above. */
 html:not(.dark) {
   --background: #ffffff;
   --foreground: #0f0f0f;
