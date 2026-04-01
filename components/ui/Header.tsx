@@ -37,13 +37,14 @@ export function Header() {
       <div className="flex items-center gap-3">
         <Link
           href="/"
-          className="inline-flex items-center justify-center font-medium rounded-xl transition-all bg-[var(--bubble-user-bg)] text-[var(--bubble-user-fg)] hover:opacity-90 active:scale-[0.98] text-base px-5 py-2.5 min-w-[120px]"
+          className="inline-flex items-center justify-center font-medium rounded-xl transition-all bg-[var(--bubble-user-bg)] text-[var(--bubble-user-fg)] hover:opacity-90 active:scale-[0.98] text-base px-5 py-2.5 min-w-[120px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--bubble-user-bg)]"
         >
           New Interview
         </Link>
 
         {/* Theme toggle */}
         <button
+          type="button"
           onClick={toggleTheme}
           aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
           className="flex items-center justify-center w-9 h-9 rounded-xl border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
