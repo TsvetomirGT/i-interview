@@ -13,7 +13,8 @@ const MAX_QUESTIONS = 10
 
 export default function InterviewPage() {
   const router = useRouter()
-  const [session] = useState<InterviewSession | null>(() => loadSession())
+  const [session, setSession] = useState<InterviewSession | null>(null)
+  const [mounted, setMounted] = useState(false)
   const [showSummary, setShowSummary] = useState(false)
   const [summaryContent, setSummaryContent] = useState('')
   const [questionCount, setQuestionCount] = useState(0)
@@ -52,10 +53,16 @@ export default function InterviewPage() {
     onFinish: handleFinish,
   })
 
-  // Redirect if no session
+  // Load session from sessionStorage after mount (avoids SSR/client hydration mismatch)
   useEffect(() => {
-    if (!session) router.replace('/')
-  }, [session, router])
+    setSession(loadSession())
+    setMounted(true)
+  }, [])
+
+  // Redirect if no session (only after mount to avoid SSR null triggering redirect)
+  useEffect(() => {
+    if (mounted && !session) router.replace('/')
+  }, [mounted, session, router])
 
   // Trigger the first AI question once session is loaded
   useEffect(() => {
@@ -77,7 +84,7 @@ export default function InterviewPage() {
     setInput('')
   }
 
-  if (!session) return null
+  if (!mounted || !session) return null
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-[var(--background)]">
