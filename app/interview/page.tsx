@@ -161,7 +161,7 @@ export default function InterviewPage() {
   if (!mounted || !session) return null
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[var(--background)]">
+    <div className="h-[calc(100vh-var(--header-height))] flex flex-col overflow-hidden bg-[var(--background)]">
       <ChatShell
         messages={messages}
         input={input}

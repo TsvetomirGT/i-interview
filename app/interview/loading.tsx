@@ -1,6 +1,6 @@
 export default function InterviewLoading() {
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[var(--background)]">
+    <div className="h-[calc(100vh-var(--header-height))] flex flex-col overflow-hidden bg-[var(--background)]">
       {/* Header skeleton */}
       <div className="shrink-0 border-b border-[var(--border)] px-4 py-3 flex items-center justify-between">
         <div className="flex flex-col gap-1.5">
