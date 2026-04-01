@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { loadHistory, deleteHistoryEntry, type HistoryEntry } from '@/lib/history'
 import { saveSession } from '@/lib/session'
+import { Button } from '@/components/ui/Button'
 
 // ── HistoryCard ───────────────────────────────────────────────────────────────
 
@@ -86,12 +87,14 @@ function HistoryCard({ entry, onDelete, onContinue }: HistoryCardProps) {
 
       {/* Continue button for in-progress */}
       {status === 'in_progress' && (
-        <button
+        <Button
+          variant="primary"
+          size="md"
           onClick={() => onContinue(entry)}
-          className="mt-2 w-full rounded-lg bg-[var(--bubble-user-bg)] text-[var(--bubble-user-fg)] text-xs font-medium py-1.5 hover:opacity-90 active:scale-95 transition-all"
+          className="mt-2 w-full"
         >
           Continue
-        </button>
+        </Button>
       )}
     </div>
   )
