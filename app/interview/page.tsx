@@ -98,9 +98,9 @@ export default function InterviewPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Persist progress to localStorage after each message
+  // Persist progress once per complete exchange (when streaming ends), not on every character
   useEffect(() => {
-    if (!session || messages.length === 0 || showSummary) return
+    if (isLoading || !session || messages.length === 0 || showSummary) return
     const topic = session.requirements.split('\n').find((l) => l.trim()) ?? 'Interview'
     const now = new Date().toISOString()
     upsertHistoryEntry({
@@ -117,7 +117,7 @@ export default function InterviewPage() {
       requirements: session.requirements,
       messages,
     })
-  }, [messages]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Redirect if no session
   useEffect(() => {
