@@ -3,42 +3,16 @@ import { HistorySidebar } from '@/components/interview/HistorySidebar'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      <div className="flex flex-col lg:flex-row min-h-screen">
+    <div className="flex-1 bg-[var(--background)]">
+      <div className="flex flex-col lg:flex-row min-h-full">
         {/* Sidebar */}
-        <aside className="lg:w-72 shrink-0 border-b lg:border-b-0 lg:border-r border-[var(--border)] p-4 lg:p-6 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
+        <aside className="lg:w-72 shrink-0 border-b lg:border-b-0 lg:border-r border-[var(--border)] p-4 lg:p-6 lg:sticky lg:top-[57px] lg:h-[calc(100vh-57px)] lg:overflow-y-auto">
           <HistorySidebar />
         </aside>
 
-        {/* Main content — centered within remaining space */}
-        <main className="flex-1 flex items-center justify-center px-4 py-12">
+        {/* Main content */}
+        <main className="flex-1 flex items-center justify-center px-4 py-10">
           <div className="w-full max-w-2xl">
-            {/* Header */}
-            <div className="mb-8 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[var(--bubble-user-bg)] mb-4">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                  />
-                </svg>
-              </div>
-              <h1 className="text-2xl font-bold text-[var(--foreground)] tracking-tight">
-                i-interview
-              </h1>
-              <p className="mt-1.5 text-sm text-[var(--muted-foreground)]">
-                AI-powered technical interview practice. Upload your job requirements and start.
-              </p>
-            </div>
-
-            {/* Card */}
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
               <SetupForm />
             </div>
