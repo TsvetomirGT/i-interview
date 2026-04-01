@@ -1,6 +1,6 @@
 'use client'
 
-import type { ChatMessage } from '@/lib/useStreamingChat'
+import type { ChatMessage } from '@/lib/types'
 import type { InterviewMode } from '@/lib/types'
 import { MessageList } from './MessageList'
 import { ChatInput } from './ChatInput'
@@ -16,8 +16,16 @@ interface ChatShellProps {
   maxQuestions: number
   showSummary: boolean
   summaryContent: string
+  secondsRemaining: number | null
+  timeIsUp: boolean
   onInputChange: (value: string) => void
   onSubmit: () => void
+}
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
 export function ChatShell({
@@ -30,11 +38,21 @@ export function ChatShell({
   maxQuestions,
   showSummary,
   summaryContent,
+  secondsRemaining,
+  timeIsUp,
   onInputChange,
   onSubmit,
 }: ChatShellProps) {
-  // Extract role name from first line of requirements
   const roleName = requirements.split('\n')[0].replace(/^#\s*/, '').trim() || 'Technical Interview'
+
+  const timerColor =
+    secondsRemaining === null
+      ? ''
+      : secondsRemaining < 60
+      ? 'text-red-500'
+      : secondsRemaining < 120
+      ? 'text-amber-500'
+      : 'text-[var(--muted-foreground)]'
 
   return (
     <div className="flex flex-col h-full">
@@ -48,16 +66,34 @@ export function ChatShell({
             {questionCount}/{maxQuestions} questions
           </p>
         </div>
-        <span
-          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-            mode === 'learn'
-              ? 'bg-[var(--feedback-bg)] text-[var(--bubble-user-bg)]'
-              : 'bg-[var(--muted)] text-[var(--muted-foreground)]'
-          }`}
-        >
-          {mode === 'learn' ? 'Learn' : 'Real'} Mode
-        </span>
+
+        <div className="flex items-center gap-3">
+          {/* Timer */}
+          {secondsRemaining !== null && (
+            <span className={`text-sm font-mono font-medium tabular-nums ${timerColor}`}>
+              {formatTime(secondsRemaining)}
+            </span>
+          )}
+
+          {/* Mode badge */}
+          <span
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              mode === 'learn'
+                ? 'bg-[var(--feedback-bg)] text-[var(--bubble-user-bg)]'
+                : 'bg-[var(--muted)] text-[var(--muted-foreground)]'
+            }`}
+          >
+            {mode === 'learn' ? 'Learn' : 'Real'} Mode
+          </span>
+        </div>
       </div>
+
+      {/* Time's up banner */}
+      {timeIsUp && !showSummary && (
+        <div className="shrink-0 bg-amber-50 border-b border-amber-200 px-4 py-2 text-sm text-amber-800 text-center">
+          Time&apos;s up — finishing up your interview…
+        </div>
+      )}
 
       {/* Messages */}
       <MessageList messages={messages} isLoading={isLoading} mode={mode} />
@@ -72,6 +108,7 @@ export function ChatShell({
             onChange={onInputChange}
             onSubmit={onSubmit}
             isLoading={isLoading}
+            disabled={timeIsUp}
           />
         </div>
       )}
