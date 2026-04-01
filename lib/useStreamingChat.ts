@@ -1,13 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import type { InterviewMode } from './types'
+import type { InterviewMode, ChatMessage } from './types'
 
-export interface ChatMessage {
-  id: string
-  role: 'user' | 'assistant'
-  content: string
-}
+export type { ChatMessage }
 
 interface UseStreamingChatOptions {
   api: string
@@ -101,5 +97,5 @@ export function useStreamingChat({ api, requirements, mode, onFinish }: UseStrea
     setIsLoading(false)
   }, [])
 
-  return { messages, input, setInput, sendMessage, append, isLoading, stop }
+  return { messages, setMessages, input, setInput, sendMessage, append, isLoading, stop }
 }
