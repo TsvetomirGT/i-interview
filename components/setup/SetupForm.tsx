@@ -12,6 +12,9 @@ export function SetupForm() {
   const router = useRouter()
   const [markdown, setMarkdown] = useState('')
   const [mode, setMode] = useState<InterviewMode>('learn')
+  const [questionCount, setQuestionCount] = useState(10)
+  const [noTimeLimit, setNoTimeLimit] = useState(true)
+  const [timeLimitMinutes, setTimeLimitMinutes] = useState(30)
   const [error, setError] = useState<string | null>(null)
 
   function handleSubmit() {
@@ -20,7 +23,12 @@ export function SetupForm() {
       return
     }
     setError(null)
-    saveSession({ requirements: markdown, mode })
+    saveSession({
+      requirements: markdown,
+      mode,
+      questionCount,
+      timeLimitMinutes: noTimeLimit ? null : timeLimitMinutes,
+    })
     router.push('/interview')
   }
 
@@ -53,6 +61,63 @@ export function SetupForm() {
           Interview Mode
         </label>
         <ModeSelector value={mode} onChange={setMode} />
+      </div>
+
+      {/* Question count */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium text-[var(--foreground)]">
+          Questions: <span className="text-[var(--bubble-user-bg)] font-semibold">{questionCount}</span>
+        </label>
+        <input
+          type="range"
+          min={1}
+          max={50}
+          step={1}
+          value={questionCount}
+          onChange={(e) => setQuestionCount(Number(e.target.value))}
+          className="w-full accent-[var(--bubble-user-bg)]"
+        />
+        <div className="flex justify-between text-xs text-[var(--muted-foreground)]">
+          <span>1</span>
+          <span>50</span>
+        </div>
+      </div>
+
+      {/* Time limit */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium text-[var(--foreground)]">
+            {noTimeLimit
+              ? 'Time Limit: No limit'
+              : `Time Limit: ${timeLimitMinutes} min`}
+          </label>
+          <label className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)] cursor-pointer">
+            <input
+              type="checkbox"
+              checked={noTimeLimit}
+              onChange={(e) => setNoTimeLimit(e.target.checked)}
+              className="accent-[var(--bubble-user-bg)]"
+            />
+            No time limit
+          </label>
+        </div>
+        {!noTimeLimit && (
+          <>
+            <input
+              type="range"
+              min={5}
+              max={120}
+              step={5}
+              value={timeLimitMinutes}
+              onChange={(e) => setTimeLimitMinutes(Number(e.target.value))}
+              className="w-full accent-[var(--bubble-user-bg)]"
+            />
+            <div className="flex justify-between text-xs text-[var(--muted-foreground)]">
+              <span>5 min</span>
+              <span>120 min</span>
+            </div>
+          </>
+        )}
       </div>
 
       <Button size="lg" onClick={handleSubmit} className="w-full">
