@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { loadHistory, deleteHistoryEntry, type HistoryEntry } from '@/lib/history'
 import { saveSession } from '@/lib/session'
@@ -99,16 +99,21 @@ function HistoryCard({ entry, onDelete, onContinue }: HistoryCardProps) {
 
 // ── HistorySidebar ────────────────────────────────────────────────────────────
 
+function sortEntries(all: HistoryEntry[]): HistoryEntry[] {
+  return [
+    ...all.filter((e) => e.status === 'in_progress').sort((a, b) => b.completedAt.localeCompare(a.completedAt)),
+    ...all.filter((e) => e.status === 'completed').sort((a, b) => b.completedAt.localeCompare(a.completedAt)),
+  ]
+}
+
 export function HistorySidebar() {
   const router = useRouter()
-  const [entries, setEntries] = useState<HistoryEntry[]>(() => {
-    const all = loadHistory()
-    // In-progress first, then completed; each group sorted newest first
-    return [
-      ...all.filter((e) => e.status === 'in_progress').sort((a, b) => b.completedAt.localeCompare(a.completedAt)),
-      ...all.filter((e) => e.status === 'completed').sort((a, b) => b.completedAt.localeCompare(a.completedAt)),
-    ]
-  })
+  // Start empty to match SSR, load from localStorage after mount
+  const [entries, setEntries] = useState<HistoryEntry[]>([])
+
+  useEffect(() => {
+    setEntries(sortEntries(loadHistory()))
+  }, [])
 
   function handleDelete(id: string) {
     setEntries((prev) => prev.filter((e) => e.id !== id))
