@@ -67,7 +67,6 @@ html:not(.dark) {
   --feedback-bg: #fff7ed;
   --feedback-border: #fed7aa;
   --feedback-fg: #7c2d12;
-  --header-height: 57px;
 }
 
 @theme inline {
@@ -86,7 +85,6 @@ html:not(.dark) {
   --color-feedback-fg: var(--feedback-fg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --header-height: var(--header-height);
 }
 
 @keyframes blink {
