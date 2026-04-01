@@ -7,7 +7,7 @@ import { loadSession } from '@/lib/session'
 import type { InterviewSession } from '@/lib/types'
 import { ChatShell } from '@/components/interview/ChatShell'
 import { hasFeedback, parseFeedback } from '@/components/interview/FeedbackCard'
-import { saveHistoryEntry } from '@/lib/history'
+import { upsertHistoryEntry } from '@/lib/history'
 
 const MAX_QUESTIONS = 10
 
