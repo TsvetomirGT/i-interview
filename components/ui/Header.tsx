@@ -47,7 +47,7 @@ export function Header() {
           type="button"
           onClick={toggleTheme}
           aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="flex items-center justify-center w-9 h-9 rounded-xl border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
+          className="flex items-center justify-center w-9 h-9 rounded-xl border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--bubble-user-bg)]"
         >
           {dark ? (
             /* Sun icon */
