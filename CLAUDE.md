@@ -19,7 +19,14 @@ No test runner is configured yet.
 
 This is a **Next.js 16.2.1** App Router project with React 19.2, TypeScript (strict), and Tailwind CSS v4.
 
-- `app/` — App Router: `layout.tsx` (root layout), `page.tsx` (home route `/`), `globals.css` (Tailwind globals)
+- `app/` — App Router: `layout.tsx` (root layout, mounts global `Header`), `page.tsx` (home `/`), `globals.css` (Tailwind globals, orange primary theme via CSS vars)
+- `app/api/interview/route.ts` — Streaming AI interview endpoint (Anthropic SDK)
+- `app/api/parse-file/route.ts` — Server-side PDF/DOC/DOCX text extraction (`pdf-parse` v2, `mammoth`; max 10 MB)
+- `app/interview/` — Chat page + loading skeleton
+- `components/ui/` — `Button`, `FileDropZone` (accepts `.txt`, `.pdf`, `.doc`, `.docx`), `Header` (sticky, dark-mode toggle, New Interview link)
+- `components/setup/` — `SetupForm`, `ModeSelector`
+- `components/interview/` — `ChatShell`, `ChatBubble`, `FeedbackCard`, `SummaryPanel`, `HistorySidebar`, `MessageList`, `ChatInput`, `TypingIndicator`
+- `lib/` — `types.ts`, `chains.ts` (streaming builder), `prompts.ts`, `session.ts`, `history.ts`, `useStreamingChat.ts`
 - `public/` — Static assets
 - Path alias: `@/` maps to the project root
 

@@ -16,7 +16,8 @@ i-interview puts you in a realistic technical interview with an AI interviewer p
 | 📋 **10-Question Sessions** | Each session runs exactly 10 questions, then delivers a full performance summary |
 | 🏆 **Hiring Recommendation** | Ends with a **Strong Hire / Hire / No Hire** assessment |
 | 📂 **Interview History** | Past sessions saved locally — review scores and topics anytime |
-| 📁 **File Upload** | Drop in a `.txt` or `.pdf` job description, or paste text directly |
+| 📁 **File Upload** | Drop in a `.txt`, `.pdf`, `.doc`, or `.docx` job description, or paste text directly |
+| 🌙 **Dark Mode** | System-preference-aware theme toggle, persisted across sessions |
 | ⚡ **Streaming Responses** | AI answers stream in real-time, token by token |
 
 ---
@@ -90,7 +91,7 @@ Each interview session (10 questions + summary) uses approximately **15,000–30
 
 1. **Open the app** at `http://localhost:3000`
 2. **Paste or upload** the job description / role requirements (minimum 50 characters)
-   - Drag & drop a `.txt` file onto the upload zone, or
+   - Drag & drop a `.txt`, `.pdf`, `.doc`, or `.docx` file onto the upload zone, or
    - Paste the job posting text directly
 3. **Choose a mode:**
    - 📚 **Learn** — best for practice; you'll get scored and see the ideal answer after each question
@@ -140,19 +141,22 @@ npm run lint     # Run ESLint
 ```
 i-interview/
 ├── app/
-│   ├── layout.tsx              # Root layout & metadata
-│   ├── page.tsx                # Home page (setup form)
-│   ├── globals.css             # Tailwind globals & CSS variables
+│   ├── layout.tsx              # Root layout & metadata (mounts global Header)
+│   ├── page.tsx                # Home page (setup form + history sidebar)
+│   ├── globals.css             # Tailwind globals & CSS variables (orange theme)
 │   ├── interview/
 │   │   ├── page.tsx            # Interview chat page
 │   │   └── loading.tsx         # Loading skeleton
-│   └── api/interview/
-│       └── route.ts            # Streaming API endpoint
+│   └── api/
+│       ├── interview/
+│       │   └── route.ts        # Streaming AI interview endpoint
+│       └── parse-file/
+│           └── route.ts        # PDF / DOC / DOCX text extraction endpoint
 ├── components/
 │   ├── setup/                  # SetupForm, ModeSelector
 │   ├── interview/              # ChatShell, ChatBubble, FeedbackCard,
 │   │   │                       # SummaryPanel, HistorySidebar, etc.
-│   └── ui/                     # Button, FileDropZone
+│   └── ui/                     # Button, FileDropZone, Header
 ├── lib/
 │   ├── types.ts                # TypeScript interfaces
 │   ├── chains.ts               # Anthropic SDK streaming builder
