@@ -31,14 +31,22 @@ export async function POST(request: NextRequest) {
 
     if (ext === 'pdf') {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const pdfParse = require('pdf-parse') as (buffer: Buffer) => Promise<{ text: string }>
-      const result = await pdfParse(buffer)
+      const { PDFParse } = require('pdf-parse') as { PDFParse: new (params: { data: Buffer }) => { getText: () => Promise<{ text: string }> } }
+      const parser = new PDFParse({ data: buffer })
+      const result = await parser.getText()
       text = result.text
     } else if (ext === 'docx' || ext === 'doc') {
       const result = await mammoth.extractRawText({ buffer })
       text = result.value
     } else {
       return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 })
+    }
+
+    if (!text.trim()) {
+      return NextResponse.json(
+        { error: 'No text could be extracted — the file may be image-only or empty' },
+        { status: 422 }
+      )
     }
 
     return NextResponse.json({ text })

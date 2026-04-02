@@ -43,12 +43,14 @@ export function FileDropZone({ onFile }: FileDropZoneProps) {
         const json = await res.json()
         if (!res.ok) {
           setError(json.error ?? 'Upload failed, please try again')
+          setFileName(null)
           return
         }
         onFile(json.text as string)
         setFileName(file.name)
       } catch {
         setError('Upload failed, please try again')
+        setFileName(null)
       } finally {
         setLoading(false)
       }
@@ -61,6 +63,7 @@ export function FileDropZone({ onFile }: FileDropZoneProps) {
   function handleDrop(e: DragEvent<HTMLDivElement>) {
     e.preventDefault()
     setDragging(false)
+    if (loading) return
     const file = e.dataTransfer.files[0]
     if (file) handleFile(file)
   }
